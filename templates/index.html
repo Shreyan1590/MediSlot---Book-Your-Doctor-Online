@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to MediSlot</h1>
+    <p class="lead">Book your doctor appointments online with ease</p>
+    <hr class="my-4">
+    <p>Smart scheduling for smarter healing</p>
+    <div class="d-grid gap-2 d-md-block mt-4">
+        <a href="{{ url_for('patient_register') }}" class="btn btn-primary btn-lg me-2">Patient Registration</a>
+        <a href="{{ url_for('doctor_register') }}" class="btn btn-success btn-lg">Doctor Registration</a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">For Patients</h5>
+                <p class="card-text">
+                    Find the right doctor, book appointments at your convenience, and manage your healthcare easily.
+                </p>
+                <a href="{{ url_for('patient_login') }}" class="btn btn-outline-primary">Patient Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">For Doctors</h5>
+                <p class="card-text">
+                    Manage your schedule, view appointments, and focus on what matters most - your patients.
+                </p>
+                <a href="{{ url_for('doctor_login') }}" class="btn btn-outline-success">Doctor Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Our Features</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-check-circle"></i> Easy appointment booking</li>
+                    <li>Doctor availability in real-time</li>
+                    <li>Secure patient records</li>
+                    <li>Automated reminders</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

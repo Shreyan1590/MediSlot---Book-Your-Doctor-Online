@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Welcome, {{ session['full_name'] }}</h2>
+
+    <!-- Disease Selection Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Find Doctor by Specialization</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-wrap">
+                {% for disease in common_diseases %}
+                <a href="{{ url_for('find_doctors_by_disease', disease=disease) }}" 
+                   class="btn btn-outline-primary m-2">
+                    {{ disease }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Upcoming Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming %}
+                    <div class="list-group">
+                        {% for appt in upcoming %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Dr. {{ appt['doctor_name'] }}</h6>
+                                <small>{{ appt['appointment_date'] }} at {{ appt['appointment_time'] }}</small>
+                            </div>
+                            <p class="mb-1">{{ appt['specialization'] }} - {{ appt['location'] }}</p>
+                            {% if appt['notes'] %}
+                            <small class="text-muted">Notes: {{ appt['notes'] }}</small>
+                            {% endif %}
+                            <div class="mt-2">
+                                <a href="{{ url_for('cancel_appointment', appointment_id=appt['id']) }}" 
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>No upcoming appointments.</p>
+                    {% endif %}
+                    <div class="d-grid mt-3">
+                        <a href="{{ url_for('doctor_search') }}" class="btn btn-success">Book New Appointment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Past Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if past %}
+                    <div class="list-group">
+                        {% for appt in past %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Dr. {{ appt['doctor_name'] }}</h6>
+                                <small>{{ appt['appointment_date'] }} at {{ appt['appointment_time'] }}</small>
+                            </div>
+                            <p class="mb-1">{{ appt['specialization'] }} - {{ appt['location'] }}</p>
+                            <small class="text-{{ 'success' if appt['status'] == 'completed' else 'warning' }}">
+                                {{ appt['status']|capitalize }}
+                            </small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>No past appointments.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

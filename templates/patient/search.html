@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Doctor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Find a Doctor</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('doctor_search') }}">
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <select class="form-select" id="specialization" name="specialization">
+                            <option value="">All Specializations</option>
+                            {% for spec in specialties %}
+                            <option value="{{ spec['specialization'] }}" 
+                                    {% if request.form.get('specialization') == spec['specialization'] %}selected{% endif %}>
+                                {{ spec['specialization'] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <select class="form-select" id="location" name="location">
+                            <option value="">All Locations</option>
+                            {% for loc in locations %}
+                            <option value="{{ loc['location'] }}" 
+                                    {% if request.form.get('location') == loc['location'] %}selected{% endif %}>
+                                {{ loc['location'] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    {% if doctors %}
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Dr. {{ doctor['full_name'] }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ doctor['specialization'] }}</h6>
+                    <p class="card-text">
+                        <i class="bi bi-geo-alt"></i> {{ doctor['location'] }}<br>
+                        {% if doctor['bio'] %}
+                        {{ doctor['bio'] }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('book_appointment', doctor_id=doctor['id']) }}" class="btn btn-primary">
+                        Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif request.method == 'POST' %}
+    <div class="alert alert-info">No doctors found matching your criteria.</div>
+    {% endif %}
+</div>
+{% endblock %}

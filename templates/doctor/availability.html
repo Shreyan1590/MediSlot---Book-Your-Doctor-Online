@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Availability{% endblock %}
+
+{% block js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add availability time slot
+    const addSlotBtn = document.getElementById('add-slot');
+    if (addSlotBtn) {
+        addSlotBtn.addEventListener('click', function() {
+            const container = document.getElementById('availability-slots');
+            const newSlot = document.createElement('div');
+            newSlot.className = 'availability-day mb-3 p-3 bg-light rounded';
+            newSlot.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3">
+                        <select name="day" class="form-select">
+                            <option value="0">Monday</option>
+                            <option value="1">Tuesday</option>
+                            <option value="2">Wednesday</option>
+                            <option value="3">Thursday</option>
+                            <option value="4">Friday</option>
+                            <option value="5">Saturday</option>
+                            <option value="6">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="start_time" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="end_time" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-danger remove-slot">Remove</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newSlot);
+            
+            // Add event listener to remove button
+            newSlot.querySelector('.remove-slot').addEventListener('click', function() {
+                container.removeChild(newSlot);
+            });
+        });
+    }
+    
+    // Remove availability time slot
+    document.querySelectorAll('.remove-slot').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.availability-day').remove();
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Manage Your Availability</h2>
+    
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Set Available Time Slots</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('manage_availability') }}">
+                <div id="availability-slots">
+                    {% if availability %}
+                        {% for avail in availability %}
+                        <div class="availability-day mb-3 p-3 bg-light rounded">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <select name="day" class="form-select">
+                                        {% for day in days %}
+                                        <option value="{{ day.id }}" {% if avail.day_of_week == day.id %}selected{% endif %}>
+                                            {{ day.name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="time" name="start_time" class="form-control" value="{{ avail.start_time }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="time" name="end_time" class="form-control" value="{{ avail.end_time }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-danger remove-slot">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info">No availability slots set yet.</div>
+                    {% endif %}
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button type="button" id="add-slot" class="btn btn-primary me-2">
+                        Add Time Slot
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        Save Availability
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

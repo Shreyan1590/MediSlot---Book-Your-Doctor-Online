@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Doctors for {{ disease }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Doctors for {{ disease }} ({{ specialization }})</h2>
+        <a href="{{ url_for('patient_dashboard') }}" class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
+    
+    {% if doctors %}
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Dr. {{ doctor.full_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ doctor.specialization }}</h6>
+                    <p class="card-text">
+                        <i class="bi bi-geo-alt"></i> {{ doctor.location }}<br>
+                        <i class="bi bi-telephone"></i> {{ doctor.phone }}<br>
+                        {% if doctor.bio %}
+                        {{ doctor.bio }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('book_appointment', doctor_id=doctor.id) }}" 
+                       class="btn btn-primary">
+                        Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        No doctors found for {{ disease }}. Please check back later.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

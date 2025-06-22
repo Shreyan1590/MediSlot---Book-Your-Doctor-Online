@@ -1,0 +1,44 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.jumbotron {
+    background-color: #e9f7fe;
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.navbar {
+    margin-bottom: 2rem;
+}
+
+.time-slot {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.time-slot:hover {
+    background-color: #e9ecef;
+}
+
+.time-slot.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.availability-day {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}

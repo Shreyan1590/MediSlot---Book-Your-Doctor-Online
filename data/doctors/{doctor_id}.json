@@ -1,0 +1,11 @@
+{
+  "id": "223e4567-e89b-12d3-a456-426614174000",
+  "full_name": "Dr. Smith",
+  "email": "smith@example.com",
+  "phone": "9876543210",
+  "password": "hashed_password_here",
+  "specialization": "Cardiology",
+  "location": "New York",
+  "bio": "Experienced cardiologist",
+  "created_at": "2023-07-15T10:00:00"
+}

@@ -1,0 +1,10 @@
+{
+    "id": "cb834217-f94b-4a58-b281-e44b7954e8c4",
+    "patient_id": "810d9cf4-db7d-4735-a1be-b7d4a03a2c83",
+    "doctor_id": "43c63a40-d6e0-4d28-8e02-73bbbdac0f53",
+    "date": "2025-06-23",
+    "time": "11:00",
+    "status": "booked",
+    "notes": "",
+    "created_at": "2025-06-22T17:13:17.109707"
+}

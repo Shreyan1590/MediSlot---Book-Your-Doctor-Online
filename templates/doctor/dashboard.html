@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Welcome, Dr. {{ session['full_name'] }}</h2>
+    
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Today's Appointments ({{ today_formatted }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if todays_appointments %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appt in todays_appointments %}
+                                <tr>
+                                    <td>{{ appt['appointment_time'] }}</td>
+                                    <td>{{ appt['patient_name'] }}</td>
+                                    <td>{{ appt['patient_phone'] }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if appt['status'] == 'completed' else 'primary' }}">
+                                            {{ appt['status'] }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if appt['status'] == 'booked' %}
+                                        <a href="{{ url_for('manage_appointment', appointment_id=appt['id'], action='complete') }}" 
+                                           class="btn btn-sm btn-success me-1">
+                                            Complete
+                                        </a>
+                                        <a href="{{ url_for('manage_appointment', appointment_id=appt['id'], action='cancel') }}" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                            Cancel
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p>No appointments scheduled for today.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Upcoming Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if upcoming %}
+                    <div class="list-group">
+                        {% for appt in upcoming %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ appt['patient_name'] }}</h6>
+                                <small>{{ appt['appointment_date'] }} at {{ appt['appointment_time'] }}</small>
+                            </div>
+                            <p class="mb-1">Phone: {{ appt['patient_phone'] }}</p>
+                            <span class="badge bg-primary">{{ appt['status'] }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>No upcoming appointments.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Past Appointments</h5>
+                </div>
+                <div class="card-body">
+                    {% if past %}
+                    <div class="list-group">
+                        {% for appt in past|slice(5) %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ appt['patient_name'] }}</h6>
+                                <small>{{ appt['appointment_date'] }} at {{ appt['appointment_time'] }}</small>
+                            </div>
+                            <span class="badge bg-{{ 'success' if appt['status'] == 'completed' else 'warning' }}">
+                                {{ appt['status'] }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">View All</a>
+                    </div>
+                    {% else %}
+                    <p>No past appointments.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{{ url_for('manage_availability') }}" class="btn btn-success">
+            Manage Availability
+        </a>
+    </div>
+</div>
+{% endblock %}

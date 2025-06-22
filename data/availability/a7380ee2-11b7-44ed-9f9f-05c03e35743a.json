@@ -1,0 +1,8 @@
+{
+    "id": "a7380ee2-11b7-44ed-9f9f-05c03e35743a",
+    "doctor_id": "43c63a40-d6e0-4d28-8e02-73bbbdac0f53",
+    "day_of_week": 2,
+    "start_time": "09:00",
+    "end_time": "17:00",
+    "is_available": true
+}
