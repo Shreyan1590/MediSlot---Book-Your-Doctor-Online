@@ -1,0 +1,13 @@
+[build]
+command = "pip install -r requirements.txt && cp -r static public/"
+publish = "public"
+functions = "functions"
+
+[[redirects]]
+from = "/*"
+to = "/.netlify/functions/main"
+status = 200
+
+[dev]
+framework = "#static"
+targetPort = 8000
